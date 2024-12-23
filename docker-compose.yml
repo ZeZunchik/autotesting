@@ -1,0 +1,21 @@
+services:
+  digital-plant-db-sql:
+    image: postgres:15.3-alpine
+    container_name: test
+    environment:
+      POSTGRES_DB: "automation_testing"
+      POSTGRES_USER: "zezin"
+      POSTGRES_PASSWORD: "qwerty123"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -D testing"]
+      interval: 5s
+      timeout: 2s
+      retries: 25
+    ports:
+      - "5433:5432"
+#    volumes:
+#      - db_microservices_data:/var/lib/postgresql/data
+    command: [  "postgres", "-c", "max_connections=400" ]
+
+volumes:
+  db_microservices_data: { }
