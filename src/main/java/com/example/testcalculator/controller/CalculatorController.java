@@ -46,12 +46,4 @@ public class CalculatorController {
 
         return ResponseEntity.ok(calculations);
     }
-
-    @GetMapping("/quantity")
-    public ResponseEntity<Integer> getQuantity() {
-
-        Integer quantity = calculatorService.getCountBy();
-        System.out.println(quantity);
-        return ResponseEntity.ok(quantity);
-    }
 }

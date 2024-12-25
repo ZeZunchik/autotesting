@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,7 +55,14 @@ public class CalculatorService {
         return calculations.stream().map(calculation -> calculationMapper.toDto(calculation)).toList();
     }
 
-    public int getCountBy(){
-        return calculationRepository.countAllBy();
+    @Transactional
+    public void clearCalculationsTable() {
+        calculationRepository.deleteAll();
     }
+
+    @Transactional
+    public void saveCalculations(ArrayList<Calculation> calculations) {
+        calculationRepository.saveAllAndFlush(calculations);
+    }
+
 }
