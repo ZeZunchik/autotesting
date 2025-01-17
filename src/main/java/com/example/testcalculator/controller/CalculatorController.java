@@ -3,34 +3,27 @@ package com.example.testcalculator.controller;
 import com.example.testcalculator.NumeralSystem;
 import com.example.testcalculator.OperationType;
 import com.example.testcalculator.dto.CalculationDTO;
-import com.example.testcalculator.entity.Calculation;
 import com.example.testcalculator.service.CalculatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class CalculatorController {
 
     private final CalculatorService calculatorService;
 
     @PostMapping("/compute")
     public ResponseEntity<String> compute(
-            @RequestParam String firstNumber,
-            @RequestParam NumeralSystem firstBase,
-            @RequestParam String secondNumber,
-            @RequestParam NumeralSystem secondBase,
-            @RequestParam OperationType operationType) {
+            @RequestBody CalculationDTO dto) {
 
-        String res = calculatorService.calculate(firstNumber, secondNumber, firstBase, secondBase, operationType);
+        String res = calculatorService.calculate(dto);
         return ResponseEntity.ok(res);
     }
 
@@ -42,7 +35,14 @@ public class CalculatorController {
             @RequestParam NumeralSystem secondBase,
             @RequestParam OperationType operationType) {
 
-        List<CalculationDTO> calculations = calculatorService.getCalculationByDatetimeBetweenAndNumeralSystemAndOperationType(start, end, firstBase, secondBase, operationType);
+        List<CalculationDTO> calculations = calculatorService
+                .getCalculationByDatetimeBetweenAndNumeralSystemAndOperationType(
+                        start,
+                        end,
+                        firstBase,
+                        secondBase,
+                        operationType
+                );
 
         return ResponseEntity.ok(calculations);
     }

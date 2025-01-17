@@ -8,6 +8,7 @@ public class Main {
 
         System.out.println("Выберите систему счисления: 2 - binary, 8 - octal, 10 - decimal, 16 - hex");
         int system = scanner.nextInt();
+        scanner.nextLine();
 
         ICalculator calculator = CalculatorFactory.getCalculator(system);
 

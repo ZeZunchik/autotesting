@@ -27,21 +27,18 @@ public class CalculatorService {
     private final CalculationMapper calculationMapper;
 
     @Transactional
-    public String calculate(String num1, String num2, NumeralSystem firstBase, NumeralSystem secondBase, OperationType operationType) {
-        Calculation calculation = new Calculation();
-        calculation.setFirstNumber(num1);
-        calculation.setFirstBase(firstBase);
-        calculation.setSecondNumber(num2);
-        calculation.setSecondBase(secondBase);
-        calculation.setOperationType(operationType);
-
+    public String calculate(CalculationDTO dto) {
+        Calculation calculation = calculationMapper.toEntity(dto);
         calculationRepository.save(calculation);
-
-        if (firstBase.getBase() != secondBase.getBase()) {
+        String num1 = calculation.getFirstNumber();
+        String num2 = calculation.getSecondNumber();
+        NumeralSystem base1 = calculation.getFirstBase();
+        NumeralSystem base2 = calculation.getSecondBase();
+        OperationType operationType = calculation.getOperationType();
+        if (base1 != base2) {
             return "Числа имеют разные системы счисления!";
         }
-
-        ICalculator calculator = CalculatorFactory.getCalculator(firstBase.getBase());
+        ICalculator calculator = CalculatorFactory.getCalculator(base1.getBase());
         return switch (operationType) {
             case ADDITION -> calculator.add(num1, num2);
             case SUBTRACTION -> calculator.subtract(num1, num2);
