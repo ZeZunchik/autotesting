@@ -52,6 +52,10 @@ public class CalculatorService {
         return calculations.stream().map(calculation -> calculationMapper.toDto(calculation)).toList();
     }
 
+    public List<Calculation> getAllCalculations() {
+        return calculationRepository.findAll();
+    }
+
     @Transactional
     public void clearCalculationsTable() {
         calculationRepository.deleteAll();

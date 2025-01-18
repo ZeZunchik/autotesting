@@ -1,6 +1,23 @@
+#spring:
+#  datasource:
+#    url: jdbc:tc:postgresql:///integration-db
+#    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+#  flyway:
+#    clean-disabled: false
+#
 spring:
+  application:
+    name: TestCalculator
+  port: 8080
   datasource:
-    url: jdbc:tc:postgresql:///integration-db
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-  flyway:
-    clean-disabled: false
+    url: jdbc:postgresql://host.docker.internal:5433/automation_testing?currentSchema=calculator
+    username: zezin
+    password: qwerty123
+
+flyway:
+  user: zezin
+  password: qwerty123
+  schemas: calculator
+  default-schema: calculator
+  locations: classpath:db/migration/calculator
+  url: jdbc:postgresql://host.docker.internal:5433/automation_testing?currentSchema=calculator

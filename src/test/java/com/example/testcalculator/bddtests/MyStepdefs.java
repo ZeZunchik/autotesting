@@ -14,7 +14,11 @@ import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -50,6 +54,7 @@ public class MyStepdefs {
 
             calculations.add(calculation);
         }
+        calculationService.clearCalculationsTable();
         calculationService.saveCalculations(calculations);
     }
 
@@ -65,12 +70,6 @@ public class MyStepdefs {
     @Когда("запрашиваем вычисления с параметрами")
     public void запрашиваем_вычисления_с_параметрами(Map<String, String> queryParams) {
 
-        String str = "http://localhost:" + PORT + "/history"
-                + "?start=" + queryParams.get("start")
-                + "&end=" + queryParams.get("end")
-                + "&firstBase=" + queryParams.get("firstBase")
-                + "&secondBase=" + queryParams.get("secondBase")
-                + "&operationType=" + queryParams.get("operationType");
         getCalculationsResponse = new RestTemplate().exchange(
                 "http://localhost:" + PORT + "/history"
                         + "?start=" + queryParams.get("start")
@@ -89,9 +88,6 @@ public class MyStepdefs {
                 .usingRecursiveComparison()
                 .ignoringFields("id")
                 .isEqualTo(getCalculationsResponse.getBody());
-        /*Assertions.assertArrayEquals(
-                mapper.readValue(responseJson, Calculation[].class),
-                getCalculationsResponse.getBody());*/
     }
 
     // Успешное получение вычислений (дата)
@@ -117,10 +113,6 @@ public class MyStepdefs {
 
     @Тогда("ответ получения вычислений \\(дата)")
     public void ответ_получения_вычислений_дата(String responseJson) throws Exception {
-        /*Assertions.assertArrayEquals(
-                mapper.readValue(responseJson, Calculation[].class),
-                getCalculationsResponse.getBody());*/
-
         assertThat(mapper.readValue(responseJson, Calculation[].class))
                 .usingRecursiveComparison()
                 .ignoringFields("id")

@@ -1,25 +1,17 @@
 package com.example.testcalculator;
 
 import com.example.testcalculator.dto.CalculationDTO;
-import com.example.testcalculator.service.CalculatorService;
 import org.flywaydb.test.annotation.FlywayTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,7 +38,7 @@ class CalculatorFlywayTest extends AuditVizualizationBaseTest {
                         .param("firstBase", createRequest.getFirstBase().toString())
                         .param("secondBase", createRequest.getSecondBase().toString())
                         .param("operationType", createRequest.getOperationType().toString()))
-                        .andExpect(status().isOk()).andReturn();
+                .andExpect(status().isOk()).andReturn();
     }
 
     @FlywayTest(locationsForMigrate = "initial-data/migration")
